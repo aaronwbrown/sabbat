@@ -11,6 +11,7 @@ public class change_scene_on_click : MonoBehaviour {
       GetComponent<Button>().onClick.AddListener(ChangeScene);
   }
 
+
   public void ChangeScene(){
       SceneManager.LoadScene("mission_menu", LoadSceneMode.Single);
  }
