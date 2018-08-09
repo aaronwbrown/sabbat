@@ -40,3 +40,6 @@ sysinfo.txt
 
 # IDE
 .idea/
+
+#System Files
+DS_Store
