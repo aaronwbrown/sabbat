@@ -10,5 +10,7 @@ public class InstantiateGemPrefabs : MonoBehaviour
         {
             Instantiate(Prefab, new Vector3(i * 2.0F, 0, 0), Quaternion.identity);
         }
+
+        Debug.Log(string.Format("The Gem color is {0}", Gem.Red));
     }
 }
