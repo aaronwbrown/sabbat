@@ -3,35 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameState : MonoBehaviour {
-	public int Turn; // First turn is 1. Player1 plays on odd turns. Player2 plays on even.
-
+	public int Turn = 1; // First turn is 1. Player1 plays on odd turns. Player2 plays on even.
 	public Player Player1;
 	public Player Player2;
 	public Board Board;
 	public InvocationArea InvocationArea;
 
 	void Start () {
-		Turn = 1;
+		InitializeGame();
 
-		Player1 = new Player();
-		Player2 = new Player();
-		InvocationArea = new InvocationArea();
-		Board = new Board();
-
-		TestStuff();
-	}
-
-	// Cheap way of testing random stuff using Debug.LogFormat statements.
-	void TestStuff() {
+		// For now, test state by simply using Debug.LogFormat statements.
 		Debug.LogFormat("Top card for Player1: {0}", Player1.Deck.PeakTop());
 		Debug.LogFormat("Top card for Player2: {0}", Player2.Deck.PeakTop());
 		Debug.LogFormat("Top-Left gem on the board: {0}", Board.GemAt(0, 0));
 	}
 
+	void InitializeGame() {
+		Turn = 1;
+		Player1 = new Player();
+		Player2 = new Player();
+		InvocationArea = new InvocationArea();
+		Board = new Board();
+	}
+
 	// Calculate current score for player1 and player2.
 	// Points are calculated as the sum of points of the invoked creatures.
 	// Some creatures have extra bonus points depending on the state of the board or the other player.
-	private VictoryPoints CalculateVictoryPoints() {
+	VictoryPoints CalculateVictoryPoints() {
 		// TODO: implementation example (pseudocode) ...
 		// for each cardId in Player1's creatures deck:
 		//     creture = Creatures.Registry.Get(cardId)
@@ -40,7 +38,7 @@ public class GameState : MonoBehaviour {
 	}
 }
 
-public struct VictoryPoints {
+struct VictoryPoints {
 	public int Player1;
 	public int Player2;
 }
@@ -49,11 +47,11 @@ public struct VictoryPoints {
 // Represents the state of either the local or remote player.
 // It has the spells deck, spells in hand, discard pile, collected gems and invoked creatures.
 public class Player {
-	public Deck Deck;
-	public Deck Hand;
-	public Deck DiscardPile;
-	public Deck Creatures;
-	public GemsBag Gems;
+	public Deck Deck; // spells available to draw
+	public Deck Hand; // spells on hand to be used during your turn
+	public Deck DiscardPile; // spells that have been played already
+	public Deck Creatures; // invoked creatures
+	public GemsBag Gems; // accumulated gems that can be used to invoke creatures and cast spells
 
 	public Player() {
 		Deck = new DefaultSpellsDeck();
@@ -70,18 +68,12 @@ public class Player {
 	}
 }
 
-// Gem
-// Gems are simply represented by their color. They are placed in the Board or in a GemsBag.
+// Gems are simply represented by their color.
 public enum Gem {
-	Red,
-	Gold,
-	Green,
-	Blue,
-	Black
+	Red, Gold, Green, Blue, Black
 };
 
-// CardId
-// All the available cards in the game.
+// Card identifiers for all the available cards in the game.
 public enum CardId {
 	Blank, // Zero-value blank card
 
@@ -98,10 +90,10 @@ public enum CardId {
 	// ...
 }
 
-// GemsBag
-// Set of gems of different colors, with methods to add and remove gems from it.
-// Initialized with zero gems by default, but can use color chain methods, for example:
-// var gems = new GemsBag().Red(4).Green(6); // bag with 4 red and 6 green gems.
+// GemsBag is a set of gems, with methods to initialize, add and remove gems from it. Example:
+//   var gems = new GemsBag().Red(4).Green(6);
+//   var gem = gems.Take(Gem.Red);
+//   var gems.Count(Gem.Red); // => 3, because one has been removed
 public class GemsBag {
 	private Dictionary<Gem, int> gemCounts;
 
