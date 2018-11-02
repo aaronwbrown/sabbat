@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameState : MonoBehaviour {
+public class GameState {
 	public int Turn = 1; // First turn is 1. Player1 plays on odd turns. Player2 plays on even.
 	public Player Player1;
 	public Player Player2;
 	public Board Board;
 	public InvocationArea InvocationArea;
 
-	void Start () {
-		InitializeGame();
-
-		// For now, test state by simply using Debug.LogFormat statements.
-		Debug.LogFormat("Top card for Player1: {0}", Player1.Deck.PeakTop());
-		Debug.LogFormat("Top card for Player2: {0}", Player2.Deck.PeakTop());
-		Debug.LogFormat("Top-Left gem on the board: {0}", Board.GemAt(0, 0));
-	}
-
-	void InitializeGame() {
+	public GameState() {
 		Turn = 1;
 		Player1 = new Player();
 		Player2 = new Player();
 		InvocationArea = new InvocationArea();
 		Board = new Board();
+	}
+
+	void LogStuff() {
+		// For now, test state by simply using Debug.LogFormat statements.
+		Debug.LogFormat("Top card for Player1: {0}", Player1.Deck.PeakTop());
+		Debug.LogFormat("Top card for Player2: {0}", Player2.Deck.PeakTop());
+		Debug.LogFormat("Top-Left gem on the board: {0}", Board.GemAt(0, 0));
 	}
 
 	// Calculate current score for player1 and player2.
