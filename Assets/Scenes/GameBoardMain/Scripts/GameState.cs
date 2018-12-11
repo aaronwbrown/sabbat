@@ -148,7 +148,7 @@ public class InvocationArea {
 // Board
 // 5x5 Matrix with the gems and methods to easily manipilate and read the board.
 public class Board {
-	private Gem[,] Gems;
+	public static Gem[,] Gems;
 
 	public Board() {
 		Randomize();
