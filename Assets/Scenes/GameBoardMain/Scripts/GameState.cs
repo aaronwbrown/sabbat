@@ -17,13 +17,6 @@ public class GameState {
 		Board = new Board();
 	}
 
-	void LogStuff() {
-		// For now, test state by simply using Debug.LogFormat statements.
-		Debug.LogFormat("Top card for Player1: {0}", Player1.Deck.PeakTop());
-		Debug.LogFormat("Top card for Player2: {0}", Player2.Deck.PeakTop());
-		Debug.LogFormat("Top-Left gem on the board: {0}", Board.GemAt(0, 0));
-	}
-
 	// Calculate current score for player1 and player2.
 	// Points are calculated as the sum of points of the invoked creatures.
 	// Some creatures have extra bonus points depending on the state of the board or the other player.
